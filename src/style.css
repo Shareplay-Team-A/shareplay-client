@@ -1,3 +1,43 @@
+body {
+    background-color: #D2EFFD;
+    text-align: center;
+}
+
+h1 {
+    margin: 10px;
+    color: #285FF4;
+    font-size: 36px;
+    font-family: "Didot", serif;
+}
+
+input {
+    margin: 5px;
+    border: 4px;
+    color:black;
+    font-size: 16px;
+}
+
 button {
-    background: red;
+    margin: 5px;
+    background: white;
+    padding: 5px 7px;
+    width: 160px;
+    text-align: center;
+    color: #285FF4;
+    border-color:#285FF4;
+    font-size: 16px;
+    border-radius: 20px;
+    left: 50%;
+    /*transition-duration: 0.4s;*/
+}
+
+button:hover {
+    background-color: #285FF4;
+    color: white;
+}
+
+a {
+    margin: 2px;
+    font-size: 16px;
+    color: black;
 }
