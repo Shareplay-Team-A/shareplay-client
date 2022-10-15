@@ -7,8 +7,8 @@ import { loadPage } from './util';
 function sendMessageToContentScript() {
   // example sending message to content.js
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    chrome.tabs.sendMessage(tabs[0].id, { greeting: 'hello' }, (response) => {
-      console.log(response.farewell);
+    chrome.tabs.sendMessage(tabs[0].id, { command: 'connect-to-socket-server' }, (response) => {
+      console.log(response.result);
     });
   });
 }
