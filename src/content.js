@@ -7,14 +7,11 @@ import { API_URL } from './scripts/api';
 console.log('content.js injected into webpage');
 
 // dummy example code of seraching for the description HTML element of a YouTube video using JQuery
-//const descriptionElement = $('.ytd-watch-metadata');
-//console.log('youtube description element: ', descriptionElement);
+// const descriptionElement = $('.ytd-watch-metadata');
+// console.log('youtube description element: ', descriptionElement);
 
 const videoElements = $('video');
-let videoElement;
-if (videoElements.length > 0) {
-  videoElement = videoElements[0];
-}
+const videoElement = videoElements.length > 0 ? videoElements[0] : undefined;
 console.log('video element', videoElement);
 
 /**
@@ -25,7 +22,7 @@ let socket;
 let shouldSync = true;
 
 if (videoElement) {
-  videoElement.onpause = (event) => {
+  videoElement.onpause = () => {
     console.log('video paused');
     if (socket) {
       socket.emit('video-update', { action: 'pause', time: videoElement.currentTime });
@@ -34,7 +31,7 @@ if (videoElement) {
     }
   };
 
-  videoElement.onplay = (event) => {
+  videoElement.onplay = () => {
     console.log('video played');
     if (socket) {
       socket.emit('video-update', { action: 'play', time: videoElement.currentTime });
@@ -43,14 +40,14 @@ if (videoElement) {
     }
   };
 
-  videoElement.ontimeupdate = (event) => {
+  videoElement.ontimeupdate = () => {
     console.log('video time stamp updated');
     if (videoElement.paused) {
       if (shouldSync) {
         if (socket) {
           socket.emit('video-update', { action: 'time-update', time: videoElement.currentTime });
         } else {
-          console.log('not connected to socket server')
+          console.log('not connected to socket server');
         }
       } else {
         shouldSync = true;
