@@ -22,33 +22,38 @@ console.log('video element', videoElement);
  */
 
 let socket;
+let shouldSync = true;
 
 if (videoElement) {
   videoElement.onpause = (event) => {
-    console.log("video paused");
+    console.log('video paused');
     if (socket) {
-      socket.emit('video-update', {action: 'pause', time: videoElement.currentTime});
+      socket.emit('video-update', { action: 'pause', time: videoElement.currentTime });
     } else {
-      console.log("not connected to socket server");
+      console.log('not connected to socket server');
     }
   };
 
   videoElement.onplay = (event) => {
-    console.log("video played");
+    console.log('video played');
     if (socket) {
-      socket.emit('video-update', {action: 'play', time: videoElement.currentTime});
+      socket.emit('video-update', { action: 'play', time: videoElement.currentTime });
     } else {
-      console.log("not connected to socket server");
+      console.log('not connected to socket server');
     }
   };
 
   videoElement.ontimeupdate = (event) => {
-    console.log("video time stamp updated");
+    console.log('video time stamp updated');
     if (videoElement.paused) {
-      if (socket) {
-        socket.emit('video-update', {action: 'time-update', time: videoElement.currentTime});
+      if (shouldSync) {
+        if (socket) {
+          socket.emit('video-update', { action: 'time-update', time: videoElement.currentTime });
+        } else {
+          console.log('not connected to socket server')
+        }
       } else {
-        console.log("not connected to socket server")
+        shouldSync = true;
       }
     }
   };
@@ -58,10 +63,10 @@ function setupSocketListeners() {
   socket.on('connect', () => {
     console.log('connected to socket server');
     // send some dummy data as an example to our socket server's 'test-channel'
-    //const sampleData = { someKey1: 'someValue1', someKey2: 'someValue2' };
-    //socket.emit('test-channel', sampleData);
+    // const sampleData = { someKey1: 'someValue1', someKey2: 'someValue2' };
+    // socket.emit('test-channel', sampleData);
   });
-  
+
   socket.on('disconnect', () => {
     socket = undefined;
     console.log('disconnected from socket server');
@@ -78,6 +83,7 @@ function setupSocketListeners() {
         videoElement.currentTime = data.time;
       } else if (data?.action === 'time-update') {
         videoElement.currentTime = data.time;
+        shouldSync = false;
       }
     }
   });
