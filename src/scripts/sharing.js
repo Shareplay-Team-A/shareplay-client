@@ -10,7 +10,7 @@ function sendMessageToContentScript() {
     chrome.tabs.sendMessage(tabs[0].id, { greeting: 'hello' }, (response) => {
       console.log(response.farewell);
     });
-    chrome.tabs.sendMessage(tabs[0].id, {action: 'connect-to-socket-server'}, (response) => {
+    chrome.tabs.sendMessage(tabs[0].id, { action: 'connect-to-socket-server' }, (response) => {
       console.log(response.result);
     });
   });
