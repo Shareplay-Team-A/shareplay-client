@@ -86,7 +86,8 @@ function setupSocketListeners() {
   });
 
   socket.on('new-user-connected', (data) => {
-    console.log('new user connected');
+    const { roomId } = data;
+    console.log('new user connected', roomId);
   });
 }
 
