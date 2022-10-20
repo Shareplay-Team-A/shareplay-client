@@ -84,6 +84,10 @@ function setupSocketListeners() {
       }
     }
   });
+
+  socket.on('new-user-connected', (data) => {
+    console.log('new user connected');
+  });
 }
 
 /**
@@ -105,6 +109,10 @@ chrome.runtime.onMessage.addListener(
           reconnectionDelayMax: 5000,
           reconnectionAttempts: 1000,
         });
+
+        // Randomly switches between room 1 and room 2 currently
+        const roomNum = Math.floor(Math.random() * 2) + 1;
+        socket.emit('join-room', { roomId: roomNum });
         setupSocketListeners();
         sendResponse({ result: 'connected to the socket server' });
       }
