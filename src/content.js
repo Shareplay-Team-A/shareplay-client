@@ -20,12 +20,13 @@ console.log('video element', videoElement);
 
 let socket;
 let shouldSync = true;
+let roomId;
 
 if (videoElement) {
   videoElement.onpause = () => {
     console.log('video paused');
     if (socket) {
-      socket.emit('video-update', { action: 'pause', time: videoElement.currentTime });
+      socket.emit('video-update', { roomId, action: 'pause', time: videoElement.currentTime });
     } else {
       console.log('not connected to socket server');
     }
@@ -34,7 +35,7 @@ if (videoElement) {
   videoElement.onplay = () => {
     console.log('video played');
     if (socket) {
-      socket.emit('video-update', { action: 'play', time: videoElement.currentTime });
+      socket.emit('video-update', { roomId, action: 'play', time: videoElement.currentTime });
     } else {
       console.log('not connected to socket server');
     }
@@ -45,7 +46,7 @@ if (videoElement) {
     if (videoElement.paused) {
       if (shouldSync) {
         if (socket) {
-          socket.emit('video-update', { action: 'time-update', time: videoElement.currentTime });
+          socket.emit('video-update', { roomId, action: 'time-update', time: videoElement.currentTime });
         } else {
           console.log('not connected to socket server');
         }
@@ -86,7 +87,7 @@ function setupSocketListeners() {
   });
 
   socket.on('new-user-connected', (data) => {
-    const { roomId } = data;
+    ({ roomId } = data);
     console.log('new user connected', roomId);
   });
 }
@@ -112,8 +113,8 @@ chrome.runtime.onMessage.addListener(
         });
 
         // Randomly switches between room 1 and room 2 currently
-        const roomNum = Math.floor(Math.random() * 2) + 1;
-        socket.emit('join-room', { roomId: roomNum });
+        roomId = Math.floor(Math.random() * 2) + 1;
+        socket.emit('join-room', { roomId });
         setupSocketListeners();
         sendResponse({ result: 'connected to the socket server' });
       }
