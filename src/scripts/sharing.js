@@ -1,6 +1,10 @@
 import $ from 'jquery';
+import { getAuth, signOut } from 'firebase/auth';
 import { loadPage } from './util';
 import shareCodePage from './share-code';
+import { firebaseApp } from './firebase-config';
+// eslint-disable-next-line import/no-cycle
+import signInPage from './sign-in';
 
 /**
  * Example of sending a message to our content script and getting a response.
@@ -39,6 +43,19 @@ function handleCreateCodeBtnClick() {
 }
 
 /**
+ * Signs out User
+ */
+function handleSignOutBtnClick() {
+  // allow user to sign out of firebase auth
+  const auth = getAuth(firebaseApp);
+  signOut(auth).then(() => {
+    signInPage.show();
+  }).catch((error) => {
+    console.error(error);
+  });
+}
+
+/**
  * Show the page contents
  */
 function show() {
@@ -47,9 +64,12 @@ function show() {
     // get elements from shareplay page
     const enterCodeBtn = $('#enter-code-btn');
     const createCodeBtn = $('#create-code-btn');
+    const signOutBtn = $('#sign-out-btn');
     // have button call functions when clicked
     enterCodeBtn.on('click', handleEnterCodeBtnClick);
     createCodeBtn.on('click', handleCreateCodeBtnClick);
+    signOutBtn.on('click', handleSignOutBtnClick);
+    sendMessageToContentScript();
   });
 }
 
