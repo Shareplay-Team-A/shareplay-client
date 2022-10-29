@@ -49,6 +49,7 @@ function handleSignOutBtnClick() {
   // allow user to sign out of firebase auth
   const auth = getAuth(firebaseApp);
   signOut(auth).then(() => {
+    console.log('signed out user!');
     signInPage.show();
   }).catch((error) => {
     console.error(error);
@@ -68,8 +69,8 @@ function show() {
     // have button call functions when clicked
     enterCodeBtn.on('click', handleEnterCodeBtnClick);
     createCodeBtn.on('click', handleCreateCodeBtnClick);
-    signOutBtn.on('click', handleSignOutBtnClick);
     sendMessageToContentScript();
+    signOutBtn.on('click', handleSignOutBtnClick);
   });
 }
 
