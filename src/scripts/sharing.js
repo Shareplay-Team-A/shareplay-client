@@ -28,6 +28,7 @@ function handleSignOutBtnClick() {
   // allow user to sign out of firebase auth
   const auth = getAuth(firebaseApp);
   signOut(auth).then(() => {
+    console.log('signed out user!');
     signInPage.show();
   }).catch((error) => {
     console.error(error);
@@ -40,8 +41,10 @@ function handleSignOutBtnClick() {
 function show() {
   loadPage('pages/sharing.html', () => {
     console.log('Page loaded');
+    // get elements from page
+    const signOutBtn = $('#sign-out-btn');
     sendMessageToContentScript();
-    $('#sign-out-btn').on('click', handleSignOutBtnClick());
+    signOutBtn.on('click', handleSignOutBtnClick);
   });
 }
 

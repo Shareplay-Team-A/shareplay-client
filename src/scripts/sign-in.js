@@ -1,9 +1,10 @@
 import $ from 'jquery';
 import {
-  createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPasword,
+  createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { firebaseApp } from './firebase-config';
 import { loadPage } from './util';
+// eslint-disable-next-line import/no-cycle
 import sharingPage from './sharing';
 
 /**
@@ -16,10 +17,11 @@ function handleSignInBtnClick() {
   const emailInput = $('#email');
   const passwordInput = $('#password');
 
-  signInWithEmailAndPasword(auth, emailInput?.val(), passwordInput?.val())
+  signInWithEmailAndPassword(auth, emailInput?.val(), passwordInput?.val())
     .then((userCredential) => {
       const { user } = userCredential;
       console.log('signed in: ', user);
+      sharingPage.show();
     })
     .catch((error) => {
       console.error(error);
