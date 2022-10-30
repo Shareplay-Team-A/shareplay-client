@@ -1,4 +1,6 @@
+import $ from 'jquery';
 import { loadPage } from './util';
+import shareCodePage from './share-code';
 
 /**
  * Example of sending a message to our content script and getting a response.
@@ -17,11 +19,31 @@ function sendMessageToContentScript() {
 }
 
 /**
+ * Called when enter code button is clicked
+ */
+function handleEnterCodeBtnClick() {
+  // To-Do: implement
+}
+
+/**
+ * Called when create code button is clicked
+ */
+function handleCreateCodeBtnClick() {
+  shareCodePage.show();
+}
+
+/**
  * Show the page contents
  */
 function show() {
   loadPage('pages/sharing.html', () => {
     console.log('Page loaded');
+    // get elements from shareplay page
+    const enterCodeBtn = $('#enter-code-btn');
+    const createCodeBtn = $('#create-code-btn');
+    // have button call functions when clicked
+    enterCodeBtn.on('click', handleEnterCodeBtnClick);
+    createCodeBtn.on('click', handleCreateCodeBtnClick);
     sendMessageToContentScript();
   });
 }
