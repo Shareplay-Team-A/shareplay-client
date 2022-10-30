@@ -21,8 +21,10 @@ function sendMessageToContentScript(roomId) {
 /**
  * Called when enter code button is clicked
  */
-function handleEnterCodeBtnClick(roomId) {
+function handleEnterCodeBtnClick() {
   // To-Do: implement
+  const roomId = document.getElementById('enter-code-input').value;
+  document.getElementById('enter-code-input').value = '';
   shareCodePage.show(roomId);
   sendMessageToContentScript(roomId);
 }

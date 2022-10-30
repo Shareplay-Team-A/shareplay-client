@@ -114,7 +114,6 @@ chrome.runtime.onMessage.addListener(
 
         // Random 6-digit code generated
         roomId = request.id;
-        // Math.floor(Math.random() * 2) + 1;
         socket.emit('join-room', { roomId });
         setupSocketListeners();
         sendResponse({ result: 'connected to the socket server' });
