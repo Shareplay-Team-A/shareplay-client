@@ -1,11 +1,11 @@
 body {
     background-image: linear-gradient(#9addfe, white);
-    text-align: center;
 }
 
 h1 {
     margin: 10px;
     color: #285FF4;
+    text-align: center;
     font-size: 36px;
     font-family: "Didot", serif;
 }
@@ -42,8 +42,21 @@ a {
     color: black;
 }
 
+.centered {
+    text-align:center;
+}
+
 #or-text {
     margin: 0px;
+    text-align: center;
     font-size: 15px;
     font-weight: bold;
+}
+
+#sign-out-link {
+    text-align: center;
+}
+
+#back-link {
+    text-align:left;
 }
