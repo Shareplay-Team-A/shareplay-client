@@ -6,13 +6,13 @@ import shareCodePage from './share-code';
  * Example of sending a message to our content script and getting a response.
  * This can be used to get stuff like video title, description, etc.
  */
-function sendMessageToContentScript() {
+function sendMessageToContentScript(roomId) {
   // example sending message to content.js
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.tabs.sendMessage(tabs[0].id, { greeting: 'hello' }, (response) => {
       console.log(response.farewell);
     });
-    chrome.tabs.sendMessage(tabs[0].id, { action: 'connect-to-socket-server' }, (response) => {
+    chrome.tabs.sendMessage(tabs[0].id, { action: 'connect-to-socket-server', id: roomId }, (response) => {
       console.log(response.result);
     });
   });
@@ -21,15 +21,19 @@ function sendMessageToContentScript() {
 /**
  * Called when enter code button is clicked
  */
-function handleEnterCodeBtnClick() {
+function handleEnterCodeBtnClick(roomId) {
   // To-Do: implement
+  shareCodePage.show(roomId);
+  sendMessageToContentScript(roomId);
 }
 
 /**
  * Called when create code button is clicked
  */
 function handleCreateCodeBtnClick() {
-  shareCodePage.show();
+  const roomId = Math.floor(Math.random() * 100000) + 100000;
+  shareCodePage.show(roomId);
+  sendMessageToContentScript(roomId);
 }
 
 /**
@@ -44,7 +48,6 @@ function show() {
     // have button call functions when clicked
     enterCodeBtn.on('click', handleEnterCodeBtnClick);
     createCodeBtn.on('click', handleCreateCodeBtnClick);
-    sendMessageToContentScript();
   });
 }
 
