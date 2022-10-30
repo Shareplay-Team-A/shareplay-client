@@ -21,14 +21,14 @@ function sendMessageToContentScript() {
 /**
  * Called when enter code button is clicked
  */
- function handleEnterCodeBtnClick() {
+function handleEnterCodeBtnClick() {
   // To-Do: implement
 }
 
 /**
  * Called when create code button is clicked
  */
- function handleCreateCodeBtnClick() {
+function handleCreateCodeBtnClick() {
   shareCodePage.show();
 }
 
