@@ -4,20 +4,23 @@ import { loadPage } from './util';
 /**
  * Called when back link is clicked
  */
-function handleBackLinkClick() {
+function handleLeaveLinkClick() {
   // sharingPage.show();
 }
 
 /**
  * Show the page contents
  */
-function show() {
+function show(roomId) {
   loadPage('pages/share-code.html', () => {
     console.log('Page loaded');
+    const el = document.getElementById('share-code');
+    const text = document.createTextNode(roomId);
+    el.appendChild(text);
     // get elements from share code page
-    const backLink = $('#back-link');
+    const leaveLink = $('#leave-link');
     // have button call functions when clicked
-    backLink.on('click', handleBackLinkClick);
+    leaveLink.on('click', handleLeaveLinkClick);
   });
 }
 

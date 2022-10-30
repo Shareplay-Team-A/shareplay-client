@@ -10,6 +10,14 @@ h1 {
     font-family: "Didot", serif;
 }
 
+h2 {
+    margin: 10px;
+    color: black;
+    text-align: center;
+    font-size: 36px;
+    font-family: "Didot", serif;
+}
+
 input {
     margin: 5px;
     border: 4px;
@@ -57,6 +65,6 @@ a {
     text-align: center;
 }
 
-#back-link {
+#leave-link {
     text-align:left;
 }

@@ -112,8 +112,9 @@ chrome.runtime.onMessage.addListener(
           reconnectionAttempts: 1000,
         });
 
-        // Randomly switches between room 1 and room 2 currently
-        roomId = Math.floor(Math.random() * 2) + 1;
+        // Random 6-digit code generated
+        roomId = request.id;
+        // Math.floor(Math.random() * 2) + 1;
         socket.emit('join-room', { roomId });
         setupSocketListeners();
         sendResponse({ result: 'connected to the socket server' });
