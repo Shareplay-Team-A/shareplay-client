@@ -112,9 +112,9 @@ chrome.runtime.onMessage.addListener(
           reconnectionAttempts: 1000,
         });
 
-        // Random 6-digit code generated
-        roomId = request.id;
-        socket.emit('join-room', { roomId });
+        // Uses 6-digit code as room id
+        const roomNum = request.id;
+        socket.emit('join-room', { roomId: roomNum });
         setupSocketListeners();
         sendResponse({ result: 'connected to the socket server' });
       }
