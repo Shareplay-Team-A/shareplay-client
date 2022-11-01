@@ -1,6 +1,9 @@
 import $ from 'jquery';
+import { getAuth, signOut } from 'firebase/auth';
+import { firebaseApp } from './firebase-config';
 import { loadPage } from './util';
-import shareCodePage from './share-code';
+// eslint-disable-next-line import/no-cycle
+import signInPage from './sign-in';
 
 /**
  * Example of sending a message to our content script and getting a response.
@@ -19,23 +22,17 @@ function sendMessageToContentScript(roomId) {
 }
 
 /**
- * Called when enter code button is clicked
+ * Signs out user
  */
-function handleEnterCodeBtnClick() {
-  // To-Do: implement
-  const roomId = document.getElementById('enter-code-input').value;
-  document.getElementById('enter-code-input').value = '';
-  shareCodePage.show(roomId);
-  sendMessageToContentScript(roomId);
-}
-
-/**
- * Called when create code button is clicked
- */
-function handleCreateCodeBtnClick() {
-  const roomId = Math.floor(Math.random() * 100000) + 100000;
-  shareCodePage.show(roomId);
-  sendMessageToContentScript(roomId);
+function handleSignOutBtnClick() {
+  // allow user to sign out of firebase auth
+  const auth = getAuth(firebaseApp);
+  signOut(auth).then(() => {
+    console.log('signed out user!');
+    signInPage.show();
+  }).catch((error) => {
+    console.error(error);
+  });
 }
 
 /**
@@ -44,12 +41,10 @@ function handleCreateCodeBtnClick() {
 function show() {
   loadPage('pages/sharing.html', () => {
     console.log('Page loaded');
-    // get elements from shareplay page
-    const enterCodeBtn = $('#enter-code-btn');
-    const createCodeBtn = $('#create-code-btn');
-    // have button call functions when clicked
-    enterCodeBtn.on('click', handleEnterCodeBtnClick);
-    createCodeBtn.on('click', handleCreateCodeBtnClick);
+    // get elements from page
+    const signOutBtn = $('#sign-out-btn');
+    sendMessageToContentScript();
+    signOutBtn.on('click', handleSignOutBtnClick);
   });
 }
 

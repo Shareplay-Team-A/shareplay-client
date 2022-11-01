@@ -1,28 +1,68 @@
 import $ from 'jquery';
-import { signIn } from './api';
+import {
+  createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword,
+} from 'firebase/auth';
+import { firebaseApp } from './firebase-config';
 import { loadPage } from './util';
+// eslint-disable-next-line import/no-cycle
 import sharingPage from './sharing';
 
 /**
  * Called when sign-in button is clicked
  */
 function handleSignInBtnClick() {
+  // get firebase auth
+  const auth = getAuth(firebaseApp);
   // get elements from the sign-in page
-  const usernameInput = $('#username');
+  const emailInput = $('#email');
   const passwordInput = $('#password');
-  const signInResult = $('#sign-in-result');
-  // make HTTP request to our server with sign-in credentials
-  signIn(
-    usernameInput?.val(),
-    passwordInput?.val(),
-    (response) => {
-      signInResult.text(JSON.stringify(response.data));
-    },
-    (error) => {
-      const serverError = error?.response?.data?.message;
-      signInResult.text(serverError || 'Unknown server error');
-    },
-  );
+
+  signInWithEmailAndPassword(auth, emailInput?.val(), passwordInput?.val())
+    .then((userCredential) => {
+      const { user } = userCredential;
+      console.log('signed in: ', user);
+      sharingPage.show();
+    })
+    .catch((error) => {
+      console.error(error);
+      // eslint-disable-next-line no-alert
+      alert('Error Signing In!');
+    });
+}
+
+/**
+ * Called when sign-up button is clicked
+ */
+function handleSignUpBtnClick() {
+  // get firebase auth
+  const auth = getAuth(firebaseApp);
+  // get elements from the sign-in page
+  const emailInput = $('#email');
+  const passwordInput = $('#password');
+
+  createUserWithEmailAndPassword(auth, emailInput?.val(), passwordInput?.val())
+    .then((userCredential) => {
+      const { user } = userCredential;
+      console.log('created user: ', user);
+      // TODO: send user to db for tracking and sending requests
+      sharingPage.show();
+    })
+    .catch((error) => {
+      console.error(error);
+      // eslint-disable-next-line no-alert
+      alert('Error Creating User!');
+    });
+}
+
+function handleAuthChange() {
+  // when the user is logged in, go to the sharing page automatically
+  const auth = getAuth(firebaseApp);
+  onAuthStateChanged(auth, (user) => {
+    console.log(user);
+    if (user) {
+      sharingPage.show();
+    }
+  });
 }
 
 /**
@@ -37,11 +77,14 @@ function handleContinueAsGuestBtnClick() {
  */
 function show() {
   loadPage('pages/sign-in.html', () => {
+    handleAuthChange();
     // get elements from the sign-in page
     const signInBtn = $('#sign-in-btn');
+    const signUpBtn = $('#sign-up-btn');
     const continueAsGuestBtn = $('#continue-as-guest-btn');
     // have buttons call functions when clicked
     signInBtn.on('click', handleSignInBtnClick);
+    signUpBtn.on('click', handleSignUpBtnClick);
     continueAsGuestBtn.on('click', handleContinueAsGuestBtnClick);
   });
 }
