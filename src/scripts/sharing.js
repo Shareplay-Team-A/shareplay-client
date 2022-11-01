@@ -9,13 +9,13 @@ import signInPage from './sign-in';
  * Example of sending a message to our content script and getting a response.
  * This can be used to get stuff like video title, description, etc.
  */
-function sendMessageToContentScript() {
+function sendMessageToContentScript(roomId) {
   // example sending message to content.js
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.tabs.sendMessage(tabs[0].id, { greeting: 'hello' }, (response) => {
       console.log(response.farewell);
     });
-    chrome.tabs.sendMessage(tabs[0].id, { action: 'connect-to-socket-server' }, (response) => {
+    chrome.tabs.sendMessage(tabs[0].id, { action: 'connect-to-socket-server', id: roomId }, (response) => {
       console.log(response.result);
     });
   });
