@@ -69,7 +69,6 @@ function show() {
     // have button call functions when clicked
     enterCodeBtn.on('click', handleEnterCodeBtnClick);
     createCodeBtn.on('click', handleCreateCodeBtnClick);
-    sendMessageToContentScript();
     signOutBtn.on('click', handleSignOutBtnClick);
   });
 }
