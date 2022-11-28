@@ -1,7 +1,8 @@
 import $ from 'jquery';
 import { getAuth, signOut } from 'firebase/auth';
-import { firebaseApp } from './firebase-config';
 import { loadPage } from './util';
+import shareCodePage from './share-code';
+import { firebaseApp } from './firebase-config';
 // eslint-disable-next-line import/no-cycle
 import signInPage from './sign-in';
 
@@ -24,6 +25,26 @@ function sendMessageToContentScript(roomId) {
 /**
  * Signs out user
  */
+ function handleEnterCodeBtnClick() {
+  // To-Do: implement
+  const roomId = document.getElementById('enter-code-input').value;
+  document.getElementById('enter-code-input').value = '';
+  shareCodePage.show(roomId);
+  sendMessageToContentScript(roomId);
+}
+
+/**
+ * Called when create code button is clicked
+ */
+function handleCreateCodeBtnClick() {
+  const roomId = Math.floor(Math.random() * 100000) + 100000;
+  shareCodePage.show(roomId);
+  sendMessageToContentScript(roomId);
+}
+
+/**
+ * Signs out User
+ */
 function handleSignOutBtnClick() {
   // allow user to sign out of firebase auth
   const auth = getAuth(firebaseApp);
@@ -41,9 +62,13 @@ function handleSignOutBtnClick() {
 function show() {
   loadPage('pages/sharing.html', () => {
     console.log('Page loaded');
-    // get elements from page
+    // get elements from shareplay page
+    const enterCodeBtn = $('#enter-code-btn');
+    const createCodeBtn = $('#create-code-btn');
     const signOutBtn = $('#sign-out-btn');
-    sendMessageToContentScript();
+    // have button call functions when clicked
+    enterCodeBtn.on('click', handleEnterCodeBtnClick);
+    createCodeBtn.on('click', handleCreateCodeBtnClick);
     signOutBtn.on('click', handleSignOutBtnClick);
   });
 }
