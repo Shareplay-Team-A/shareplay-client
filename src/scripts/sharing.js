@@ -25,7 +25,7 @@ function sendMessageToContentScript(roomId) {
 /**
  * Signs out user
  */
- function handleEnterCodeBtnClick() {
+function handleEnterCodeBtnClick() {
   // To-Do: implement
   const roomId = document.getElementById('enter-code-input').value;
   document.getElementById('enter-code-input').value = '';
