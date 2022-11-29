@@ -37,9 +37,10 @@ function handleEnterCodeBtnClick() {
  * Called when create code button is clicked
  */
 function handleCreateCodeBtnClick() {
-  const roomId = Math.floor(Math.random() * 100000) + 100000;
-  shareCodePage.show(roomId);
+  const roomIdNum = Math.floor(Math.random() * 100000) + 100000;
+  const roomId = `${roomIdNum}`;
   sendMessageToContentScript(roomId);
+  shareCodePage.show(roomId);
 }
 
 /**

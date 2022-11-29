@@ -114,6 +114,8 @@ chrome.runtime.onMessage.addListener(
 
         // Uses 6-digit code as room id
         const roomNum = request.id;
+        console.log('room id from content request', roomNum);
+        roomId = roomNum;
         socket.emit('join-room', { roomId: roomNum });
         setupSocketListeners();
         sendResponse({ result: 'connected to the socket server' });
